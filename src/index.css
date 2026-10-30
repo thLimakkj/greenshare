@@ -1,0 +1,8 @@
+@tailwind base; @tailwind components; @tailwind utilities;
+body { @apply bg-casca text-tinta antialiased; }
+:focus-visible { @apply outline-2 outline-offset-2 outline-folha-600; }
+.input { @apply w-full rounded-lg border border-stone-300 bg-white px-3 py-2.5 text-base; }
+.btn { @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 font-medium transition disabled:opacity-50; }
+.btn-primary { @apply btn bg-folha-600 text-white hover:bg-folha-700; }
+.btn-ghost { @apply btn border border-stone-300 bg-white hover:bg-stone-50; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
