@@ -11,6 +11,8 @@ export default function Auth() {
   const location = useLocation()
   const [cadastro, setCadastro] = useState(false)
   const [nome, setNome] = useState('')
+  const [telefone, setTelefone] = useState('')
+  const [endereco, setEndereco] = useState('')
   const [email, setEmail] = useState('')
   const [senha, setSenha] = useState('')
   const [busy, setBusy] = useState(false)
@@ -20,11 +22,13 @@ export default function Auth() {
   const enviar = async (e: FormEvent) => {
     e.preventDefault()
     if (cadastro && nome.trim().length < 2) return toast.error('Informe seu nome.')
+    if (cadastro && !/^\d{10,11}$/.test(telefone.replace(/\D/g, ''))) return toast.error('Informe um telefone válido com DDD.')
+    if (cadastro && endereco.trim().length < 5) return toast.error('Informe seu endereço.')
     if (senha.length < 6) return toast.error('A senha precisa ter ao menos 6 caracteres.')
     setBusy(true)
     try {
       if (cadastro) {
-        const { data, error } = await supabase.auth.signUp({ email, password: senha, options: { data: { nome: nome.trim() } } })
+        const { data, error } = await supabase.auth.signUp({ email, password: senha, options: { data: { nome: nome.trim(), telefone: telefone.trim(), endereco: endereco.trim() } } })
         if (error) throw error
         if (!data.session) toast.success('Conta criada! Confirme o e-mail para entrar.')
       } else {
@@ -44,8 +48,14 @@ export default function Auth() {
         <p className="mt-1 text-stone-600">Com a mesma conta você doa alimentos e reserva o que precisar.</p>
       </div>
       <form onSubmit={enviar} className="space-y-4">
-        {cadastro && <label className="block text-sm font-medium">Nome
-          <input className="input mt-1" value={nome} onChange={(e) => setNome(e.target.value)} autoComplete="name" required /></label>}
+        {cadastro && <>
+          <label className="block text-sm font-medium">Nome
+            <input className="input mt-1" value={nome} onChange={(e) => setNome(e.target.value)} autoComplete="name" required /></label>
+          <label className="block text-sm font-medium">Telefone (com DDD)
+            <input className="input mt-1" type="tel" inputMode="tel" placeholder="(21) 99999-9999" value={telefone} onChange={(e) => setTelefone(e.target.value)} autoComplete="tel" required /></label>
+          <label className="block text-sm font-medium">Endereço
+            <input className="input mt-1" placeholder="Rua, número, bairro, cidade" value={endereco} onChange={(e) => setEndereco(e.target.value)} autoComplete="street-address" required /></label>
+        </>}
         <label className="block text-sm font-medium">E-mail
           <input className="input mt-1" type="email" value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email" required /></label>
         <label className="block text-sm font-medium">Senha
