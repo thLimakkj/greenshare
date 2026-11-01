@@ -7,6 +7,7 @@ import Auth from './pages/Auth'
 import Feed from './pages/Feed'
 import NewDonation from './pages/NewDonation'
 import MyRecords from './pages/MyRecords'
+import Profile from './pages/Profile'
 
 const Layout = () => (<><Navbar /><Outlet /></>)
 
@@ -21,6 +22,7 @@ export default function App() {
               <Route path="/" element={<Feed />} />
               <Route path="/doar" element={<NewDonation />} />
               <Route path="/meus-registros" element={<MyRecords />} />
+              <Route path="/perfil" element={<Profile />} />
             </Route>
           </Route>
           <Route path="*" element={<Navigate to="/" replace />} />

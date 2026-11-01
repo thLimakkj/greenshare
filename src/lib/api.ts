@@ -27,4 +27,4 @@ export async function executarAcao(acao: Acao, id: string, qtd?: number): Promis
   }
 }
 
-export const SELECT_DOACAO = '*, doador:id_doador(nome, telefone, endereco)'
+export const SELECT_DOACAO = '*, doador:id_doador(nome, telefone, endereco), receptor:id_receptor(nome, telefone, endereco)'

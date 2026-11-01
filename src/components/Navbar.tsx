@@ -1,5 +1,5 @@
 import { NavLink, Link } from 'react-router-dom'
-import { Leaf, LogOut, PlusCircle, ClipboardList, Utensils } from 'lucide-react'
+import { Leaf, LogOut, PlusCircle, ClipboardList, Utensils, UserCircle } from 'lucide-react'
 import { useAuth } from '../auth/AuthContext'
 
 const link = ({ isActive }: { isActive: boolean }) =>
@@ -15,6 +15,7 @@ export default function Navbar() {
           <NavLink to="/" end className={link}><Utensils size={18} aria-hidden />Doações</NavLink>
           <NavLink to="/doar" className={link}><PlusCircle size={18} aria-hidden />Doar</NavLink>
           <NavLink to="/meus-registros" className={link}><ClipboardList size={18} aria-hidden />Meus registros</NavLink>
+          <NavLink to="/perfil" className={link}><UserCircle size={18} aria-hidden />Meu perfil</NavLink>
         </nav>
         <div className="flex items-center gap-3 text-sm">
           <span className="hidden text-stone-600 sm:inline">{perfil?.nome}</span>
@@ -25,6 +26,7 @@ export default function Navbar() {
         <NavLink to="/" end className={link}><Utensils size={20} aria-hidden />Doações</NavLink>
         <NavLink to="/doar" className={link}><PlusCircle size={20} aria-hidden />Doar</NavLink>
         <NavLink to="/meus-registros" className={link}><ClipboardList size={20} aria-hidden />Registros</NavLink>
+        <NavLink to="/perfil" className={link}><UserCircle size={20} aria-hidden />Perfil</NavLink>
       </nav>
     </>
   )
