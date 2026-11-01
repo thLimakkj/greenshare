@@ -1,6 +1,3 @@
 # GreenShare – Portal de Doação de Alimentos
 
-1. No Supabase (organização GreenShare), crie um projeto e rode `supabase/schema.sql` no SQL Editor.
-2. Em Authentication > Providers, mantenha Email habilitado (desative "Confirm email" para testar mais rápido).
-3. Copie `.env.example` para `.env` e preencha URL e anon key (Project Settings > API).
-4. `npm install` e `npm run dev`.
+Essa aplicação é parte de um projeto de faculdade e tem como propósito a integrar o desenvolvimento fullstack à responsabilidade socioambiental. O GreenShare visa reduzir o índice de alimentos desperdiçados, permitindo o contato com pessoas que queiram doar alimentos excedentes. O projeto foi criado com o auxílio do Claude Code e do Lovable, e possui um banco de dados ativo, que utiliza o Supabase como BaaS.  
