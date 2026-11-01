@@ -14,9 +14,10 @@ export function mensagemErro(e: unknown): string {
   return 'Algo deu errado. Tente novamente.'
 }
 
-export async function executarAcao(acao: Acao, id: string): Promise<boolean> {
+export async function executarAcao(acao: Acao, id: string, qtd?: number): Promise<boolean> {
   try {
-    const { error } = await supabase.rpc(acao, { p_id: id })
+    const args = acao === 'reservar_doacao' ? { p_id: id, p_qtd: qtd ?? 1 } : { p_id: id }
+    const { error } = await supabase.rpc(acao, args)
     if (error) throw error
     toast.success(MENSAGENS[acao])
     return true
