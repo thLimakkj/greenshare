@@ -4,7 +4,7 @@ import toast from 'react-hot-toast'
 import { supabase } from '../lib/supabase'
 import { mensagemErro } from '../lib/api'
 import { useAuth } from '../auth/AuthContext'
-import { CATEGORIAS, type Categoria } from '../types'
+import { CATEGORIAS, UNIDADES, type Categoria } from '../types'
 
 const MAX_MB = 5
 
@@ -14,6 +14,7 @@ export default function NewDonation() {
   const [titulo, setTitulo] = useState('')
   const [categoria, setCategoria] = useState<Categoria>(CATEGORIAS[0])
   const [quantidade, setQuantidade] = useState('')
+  const [unidade, setUnidade] = useState<string>(UNIDADES[0])
   const [descricao, setDescricao] = useState('')
   const [foto, setFoto] = useState<File | null>(null)
   const [busy, setBusy] = useState(false)
@@ -28,7 +29,8 @@ export default function NewDonation() {
   const enviar = async (e: FormEvent) => {
     e.preventDefault()
     if (titulo.trim().length < 3) return toast.error('Dê um título à doação (mín. 3 letras).')
-    if (!quantidade.trim()) return toast.error('Informe a quantidade.')
+    const qtd = Number(quantidade)
+    if (!Number.isInteger(qtd) || qtd < 1) return toast.error('Informe a quantidade (número inteiro, mínimo 1).')
     setBusy(true)
     try {
       let url: string | null = null
@@ -40,7 +42,7 @@ export default function NewDonation() {
         url = supabase.storage.from('imagens-doacoes').getPublicUrl(caminho).data.publicUrl
       }
       const { error } = await supabase.from('doacoes').insert({
-        id_doador: user!.id, titulo: titulo.trim(), categoria, quantidade: quantidade.trim(),
+        id_doador: user!.id, titulo: titulo.trim(), categoria, qtd, unidade,
         descricao: descricao.trim() || null, url_imagem: url,
       })
       if (error) throw error
@@ -60,8 +62,13 @@ export default function NewDonation() {
         <label className="block text-sm font-medium">Categoria
           <select className="input mt-1" value={categoria} onChange={(e) => setCategoria(e.target.value as Categoria)}>
             {CATEGORIAS.map((c) => <option key={c}>{c}</option>)}</select></label>
-        <label className="block text-sm font-medium">Quantidade
-          <input className="input mt-1" placeholder="Ex.: 10 unidades" value={quantidade} onChange={(e) => setQuantidade(e.target.value)} required /></label>
+        <div className="grid grid-cols-2 gap-3">
+          <label className="block text-sm font-medium">Quantidade
+            <input className="input mt-1" type="number" inputMode="numeric" min={1} step={1} placeholder="Ex.: 10" value={quantidade} onChange={(e) => setQuantidade(e.target.value)} required /></label>
+          <label className="block text-sm font-medium">Unidade
+            <select className="input mt-1" value={unidade} onChange={(e) => setUnidade(e.target.value)}>
+              {UNIDADES.map((u) => <option key={u}>{u}</option>)}</select></label>
+        </div>
         <label className="block text-sm font-medium">Descrição
           <textarea className="input mt-1" rows={4} placeholder="Validade, ingredientes, conservação…" value={descricao} onChange={(e) => setDescricao(e.target.value)} /></label>
         <label className="block text-sm font-medium">Foto (opcional)
